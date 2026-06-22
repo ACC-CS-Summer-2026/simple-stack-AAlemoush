@@ -19,105 +19,116 @@ int main() {
      * **********************************/
     
     Stack myStack;
-    int tempVal = 0;
+    int tempVal = SUCCESS_EXIT;
     bool success = false;
+    int i; 
+    int numRandomTests;
+    int pushCount = SUCCESS_EXIT;
+    int popCount = SUCCESS_EXIT;
+    int peekCount = SUCCESS_EXIT;
+    int operation;
 
-    // Seed random number generator
-    std::srand(std::time(0));
+    std::srand(std::time(NULL));
 
     std::cout << "==========================================\n";
     std::cout << "        STACK ADT EXPLICIT TESTING\n";
     std::cout << "        Max Stack Size: " << STACK_SIZE << "\n";
     std::cout << "==========================================\n\n";
 
-    // ---------------------------------------------------------
-    // Phase 1: Underflow state testing (Empty Stack)
-    // ---------------------------------------------------------
     std::cout << "--- Phase 1: Underflow Testing ---\n";
     
     std::cout << "Checking isEmpty() on new stack: ";
-    if(myStack.isEmpty()) std::cout << "PASS (Empty)\n"; else std::cout << "FAIL\n";
+    if (myStack.isEmpty()) {
+        std::cout << "PASS (Empty)\n"; 
+    } else {
+        std::cout << "FAIL\n";
+    }
 
     std::cout << "Attempting to peek() empty stack: ";
     success = myStack.peek(&tempVal);
-    if(!success) std::cout << "PASS (Underflow caught)\n"; else std::cout << "FAIL\n";
+    if (!success) {
+        std::cout << "PASS (Underflow caught)\n"; 
+    } else {
+        std::cout << "FAIL\n";
+    }
 
     std::cout << "Attempting to pop() empty stack: ";
     success = myStack.pop(&tempVal);
-    if(!success) std::cout << "PASS (Underflow caught)\n"; else std::cout << "FAIL\n";
+    if (!success) {
+        std::cout << "PASS (Underflow caught)\n"; 
+    } else {
+        std::cout << "FAIL\n";
+    }
     std::cout << "\n";
 
-    // ---------------------------------------------------------
-    // Phase 2: Middle state testing (Filling the stack)
-    // ---------------------------------------------------------
     std::cout << "--- Phase 2: Standard Operations & Filling ---\n";
-    for(int i = 0; i < STACK_SIZE; i++) {
-        success = myStack.push(i * 10);
-        if(!success) {
+    for (i = 0; i < STACK_SIZE; i++) {
+        success = myStack.push(i * MULTIPLIER_10);
+        if (!success) {
             std::cout << "FAIL at pushing element " << i << "\n";
         }
     }
     std::cout << STACK_SIZE << " elements pushed.\n";
     
     std::cout << "Checking isEmpty() on full stack: ";
-    if(!myStack.isEmpty()) std::cout << "PASS (Not empty)\n"; else std::cout << "FAIL\n";
+    if (!myStack.isEmpty()) {
+        std::cout << "PASS (Not empty)\n"; 
+    } else {
+        std::cout << "FAIL\n";
+    }
 
     std::cout << "Checking peek() on full stack: ";
     success = myStack.peek(&tempVal);
-    if(success && tempVal == (STACK_SIZE - 1) * 10) {
+    if (success && tempVal == (STACK_SIZE - 1) * MULTIPLIER_10) {
         std::cout << "PASS (Top is " << tempVal << ")\n";
     } else {
         std::cout << "FAIL\n";
     }
     std::cout << "\n";
 
-    // ---------------------------------------------------------
-    // Phase 3: Overflow state testing (Full Stack)
-    // ---------------------------------------------------------
     std::cout << "--- Phase 3: Overflow Testing ---\n";
     std::cout << "Attempting to push() onto a full stack: ";
-    success = myStack.push(999);
-    if(!success) std::cout << "PASS (Overflow caught)\n"; else std::cout << "FAIL\n";
+    success = myStack.push(OVERFLOW_TEST_VAL);
+    if (!success) {
+        std::cout << "PASS (Overflow caught)\n"; 
+    } else {
+        std::cout << "FAIL\n";
+    }
     std::cout << "\n";
 
-    // ---------------------------------------------------------
-    // Phase 4: Emptying the stack (Checking consistency)
-    // ---------------------------------------------------------
     std::cout << "--- Phase 4: Emptying Stack ---\n";
-    for(int i = 0; i < STACK_SIZE; i++) {
+    for (i = 0; i < STACK_SIZE; i++) {
         success = myStack.pop(&tempVal);
-        if(!success) {
+        if (!success) {
             std::cout << "FAIL at popping element " << i << "\n";
         }
     }
     std::cout << STACK_SIZE << " elements popped.\n";
     
     std::cout << "Checking isEmpty() after full pop: ";
-    if(myStack.isEmpty()) std::cout << "PASS (Empty)\n"; else std::cout << "FAIL\n";
+    if (myStack.isEmpty()) {
+        std::cout << "PASS (Empty)\n"; 
+    } else {
+        std::cout << "FAIL\n";
+    }
     std::cout << "\n";
 
-
-    // ---------------------------------------------------------
-    // Phase 5: Dynamic Random Testing
-    // ---------------------------------------------------------
     std::cout << "==========================================\n";
     std::cout << "        STACK ADT RANDOM TESTING\n";
     std::cout << "==========================================\n";
     
-    // Scale tests linearly to the STACK_SIZE
-    int numRandomTests = STACK_SIZE * 1000; 
-    int pushCount = 0, popCount = 0, peekCount = 0;
+    numRandomTests = STACK_SIZE * RANDOM_MULTIPLIER; 
 
     std::cout << "Running " << numRandomTests << " random operations...\n";
 
-    for(int i = 0; i < numRandomTests; i++) {
-        int operation = std::rand() % 3; // 0 = push, 1 = pop, 2 = peek
+    for (i = 0; i < numRandomTests; i++) {
+        operation = std::rand() % NUM_OPERATIONS; 
         
-        if(operation == 0) {
-            myStack.push(std::rand() % 100);
+        if (operation == PUSH_OP) {
+            myStack.push(std::rand() % RANDOM_VAL_LIMIT);
             pushCount++;
         } 
-        else if (operation == 1) {
+        else if (operation == POP_OP) {
             myStack.pop(&tempVal);
             popCount++;
         } 
@@ -132,9 +143,8 @@ int main() {
     std::cout << "Total Pops Attempted: " << popCount << "\n";
     std::cout << "Total Peeks Attempted: " << peekCount << "\n";
     
-    // Final state check to ensure the stack hasn't corrupted
     std::cout << "\nFinal Stack Status: ";
-    if(myStack.isEmpty()) {
+    if (myStack.isEmpty()) {
          std::cout << "Valid (Empty)\n";
     } else {
          myStack.peek(&tempVal);
@@ -143,5 +153,5 @@ int main() {
 
     std::cout << "\nAll testing complete.\n";
 
-    return 0;
+    return SUCCESS_EXIT;
 }
