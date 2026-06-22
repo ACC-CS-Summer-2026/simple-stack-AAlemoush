@@ -1,0 +1,1 @@
+1:I used AI to generate code based on the assignemtn instructions 2: i didnt have AI make any major mistake, by just coding it step by step with AI bit by bit for main and stack 3: Same as 2 4: I Dont think i learned anything new conceptually yet, due to my experience in the field 5:NOt better but not worse, definetly couldnt have done it as fast.
