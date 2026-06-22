@@ -8,6 +8,7 @@
 #define CLASSES_STACK_H
 
 #define STACK_SIZE 10
+#define EMPTY -1
 
 class Stack {
 

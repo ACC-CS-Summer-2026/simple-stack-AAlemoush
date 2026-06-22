@@ -17,7 +17,7 @@ Stack::Stack() {
     @note When the constructor completes, the object should
           be fully ready for use.
     * ************************************************* */
-    top = -1;
+    top = EMPTY;
 }
 
 Stack::~Stack() {
@@ -41,13 +41,15 @@ bool Stack::push(int val) {
     @exception na : na
     @note Checks for overflow before pushing.
     * ************************************************* */
-    if (top >= STACK_SIZE - 1) {
-        return false; // overflow
+    bool success = false;
+
+    if (top < STACK_SIZE - 1) {
+        top++;
+        stack[top] = val;
+        success = true;
     }
     
-    top++;
-    stack[top] = val;
-    return true;
+    return success;
 }
 
 bool Stack::pop(int* val) {
@@ -60,13 +62,15 @@ bool Stack::pop(int* val) {
     @exception na : na
     @note Checks for underflow before popping.
     * ************************************************* */
-    if (isEmpty()) {
-        return false; // underflow
+    bool success = false;
+
+    if (!isEmpty()) {
+        *val = stack[top];
+        top--;
+        success = true;
     }
 
-    *val = stack[top];
-    top--;
-    return true;
+    return success;
 }
 
 bool Stack::peek(int* val) {
@@ -79,12 +83,14 @@ bool Stack::peek(int* val) {
     @exception na : na
     @note Checks for empty stack before peeking.
     * ************************************************* */
-    if (isEmpty()) {
-        return false; // underflow
+    bool success = false;
+
+    if (!isEmpty()) {
+        *val = stack[top];
+        success = true;
     }
 
-    *val = stack[top];
-    return true;
+    return success;
 }
 
 bool Stack::isEmpty() {
@@ -96,5 +102,5 @@ bool Stack::isEmpty() {
     @exception na : na
     @note Evaluates whether the top index is less than 0.
     * ************************************************* */
-    return top < 0;
+    return top == EMPTY;
 }
